@@ -21,29 +21,29 @@ warnings.filterwarnings("ignore", category=UserWarning, module='bs4')
 logging.basicConfig(filename="ZenPencilsLog.txt", level=logging.DEBUG,
                     format=' %(asctime)s - %(levelname)s - %(message)s')
 
+
 def check_connection(url):
     """checks if the connection is made and returns the response"""
     try:
         res = requests.get(url)
         res.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        return False
-    print("Connected to "+str(url))
-    logging.info("Connected to "+str(url))
-    return res
+        return (True, res)
+    except requests.exceptions.MissingSchema as e:
+        error = "Invalid URL "+url
+    except requests.exceptions.HTTPError as e:
+        error = "HTTPError :"+str(res.status_code)
+    except requests.exceptions.Timeout as e:
+        error = "Connection Timeout! Please retry."
+    except requests.exceptions.TooManyRedirects as e:
+        error = "Too Many Redirects! Please refresh check the URL"
+    except requests.exceptions.ConnectionError as e:
+        error = "Connection Error! PLease check you Connections"
+    return (False,error)
 
-# Getting the file path and creating necessary directories
-folder_path = sys.argv[1]
-if folder_path is None:
-    folder_path = os.getcwd()
-    logging.info("No path entered,saving it to the current directory.")
-    print("No path entered, saving it to the current directory...")
-if not os.path.exists(folder_path):
-    os.makedirs(folder_path)
-os.chdir(folder_path)
-os.mkdir("Zen Pencils Comics")
-logging.info("Directory \"Zen Pencils Comics\" created")
 
+
+def _check_path(folder_path):
+    return os.path.exists(folder_path)
 
 
 # -----------------------------
