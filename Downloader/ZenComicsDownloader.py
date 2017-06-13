@@ -21,6 +21,9 @@ logging.basicConfig(filename="ZenPencilsLog.txt", level=logging.DEBUG,
                     format=' %(asctime)s - %(levelname)s - %(message)s')
 logging.disable(logging.DEBUG)
 
+# ----------------------------------------------------------------------
+#                           Supplementary functions
+# ----------------------------------------------------------------------
 
 def get_comic(address):
     """This function downloads the comic image"""
@@ -50,8 +53,10 @@ def create_directory(target):
 
     return folder_path
 
+# ----------------------------------------------------------------------
+#                              Main function
+# ----------------------------------------------------------------------
 
-# Main program ...
 def main(args):
     # Connecting to Zenpencils.com's home page
     logging.info("Connecting to zenpencils.com")
@@ -62,15 +67,15 @@ def main(args):
         print(response)
         sys.exit(1)
 
-    # Connection Successful
     logging.info("Connection successful")
 
-    # Fetching Target Directory from command line argument
+    # Setting up the target directory
     folder_path = create_directory(args)
     os.chdir(folder_path)
 
+    # Parsing the html file to collect links
     soup = bs4.BeautifulSoup(response.text)
-    not_downloaded = []  # list of not downloaded comics
+    not_downloaded = []
 
     # The links of all the comics are in the homepage under class: "level-0"
     comic_links = set(soup.select('.level-0'))
@@ -90,7 +95,9 @@ def main(args):
             continue
 
         print(comic_name + " downloaded")
-
+   
+    # If there are files which weren't downloaded for some reasons, we can add
+    # an extra function below to retry downloading.
     if len(not_downloaded) > 0:
         print("This files are not downloaded")
         for l in not_downloaded:
@@ -98,6 +105,9 @@ def main(args):
     logging.info("Download Complete")
 
     print("Done!!")
+
+
+# ---------------------------------END----------------------------------
 
 
 if __name__ == "__main__":
