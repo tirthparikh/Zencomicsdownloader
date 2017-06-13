@@ -1,7 +1,8 @@
 from unittest import mock
+
 import requests
 
-from ZenComicsDownloader import check_connection
+from Downloader.ZenComicsDownloader import check_connection
 
 URL = "http://zenpencils.com"
 
@@ -13,7 +14,7 @@ def test_check_connection_for_Invalid_Url():
 
 
 @mock.patch("ZenComicsDownloader.requests.get")
-class TestClass_for_check_connection():
+class TestClassforcheckconnection():
     def test_check_connection_for_HTTPError(self, mock_get):
         """Testing the check_connection method for HTTPError"""
         mock_response = mock.Mock()

@@ -7,14 +7,14 @@ You can run this program directly from your terminal as
 
 """
 
-import sys
-import os
 import logging
+import sys
 
 import bs4
+import os
 import warnings
 
-from downloadhandle import check_connection, download_image
+from Downloader.downloadhandle import check_connection, download_image
 
 warnings.filterwarnings("ignore", category=UserWarning, module='bs4')
 logging.basicConfig(filename="ZenPencilsLog.txt", level=logging.DEBUG,

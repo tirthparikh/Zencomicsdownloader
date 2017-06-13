@@ -2,9 +2,6 @@
 check if proper response is received from a url"""
 
 import requests
-import warnings
-
-warnings.filterwarnings("ignore", category=UserWarning, module='bs4')
 
 
 def check_connection(url):
