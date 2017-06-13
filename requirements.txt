@@ -1,0 +1,7 @@
+# Requirement files for the ZenComic Downloader
+####### Important modules ########
+###### Requirements without Version Specifiers ######
+requests
+beautifulsoup4
+pytest
+###### END ######
