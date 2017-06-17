@@ -42,7 +42,7 @@ def get_comic(address):
 def create_directory(target):
     folder_path = target
 
-    # If no destination mentioned, set it to current directory
+    # If destination empty, set it to current directory
     if not folder_path:
         folder_path = os.getcwd()
     folder_path += "/ZenPencilComics"
@@ -60,6 +60,7 @@ def create_directory(target):
 def main(args):
     # Connecting to Zenpencils.com's home page
     logging.info("Connecting to zenpencils.com")
+    print("Connecting to zenpencils.com")
     connected, response = check_connection("http://www.zenpencils.com")
     if not connected:
         logging.error(response)
@@ -81,11 +82,9 @@ def main(args):
     comic_links = set(soup.select('.level-0'))
 
     for link in comic_links:
-        logging.info("Downloading : " + comic_name)
-        print("Attempting to download :" + comic_name)
-
         address = link['value']
-        comic_name = address[28:]
+        comic_name = address[28:].rstrip("/")
+        logging.info("Downloading : " + comic_name)
 
         status = get_comic(address)
         if not status:
@@ -93,9 +92,9 @@ def main(args):
             not_downloaded.append(address)
             print("Download failed for " + comic_name)
             continue
+        print("Downloaded: "+comic_name)
+        logging.info(comic_name+" downloaded")
 
-        print(comic_name + " downloaded")
-   
     # If there are files which weren't downloaded for some reasons, we can add
     # an extra function below to retry downloading.
     if len(not_downloaded) > 0:
